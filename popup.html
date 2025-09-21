@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculator</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      width: 240px;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+    #display {
+      width: 100%;
+      height: 40px;
+      text-align: right;
+      font-size: 20px;
+      margin-bottom: 5px;
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      color: #0f0;
+      padding-right: 5px;
+    }
+    button {
+      width: 50px;
+      height: 50px;
+      margin: 3px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .num { background-color: #00ff00; color: #000; }
+    .op { background-color: #ffff00; color: #000; }
+    #clear { background-color: orange; color: #000; }
+    button:hover { filter: brightness(120%); }
+    .calculator { display: flex; flex-direction: column; align-items: center; }
+    .buttons { display: grid; grid-template-columns: repeat(4, 50px); grid-gap: 3px; }
+    .wide { grid-column: span 2; }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" readonly>
+    <div class="buttons"></div>
+  </div>
 
+  <script>
+    const display = document.getElementById('display');
+    const buttonsContainer = document.querySelector('.buttons');
+
+    const layout = [
+      '1','2','3','X',
+      '4','5','6','*',
+      '7','8','9','-',
+      '0','.','=','+',
+      'C'
+    ];
+
+    layout.forEach(val => {
+      const btn = document.createElement('button');
+      btn.textContent = val;
+
+      // Assign classes
+      if('0123456789.'.includes(val)) btn.className = 'num';
+      if(['+','-','*','/','X','=',].includes(val)) btn.className = 'op';
+      if(val === 'C') btn.id = 'clear';
+      if(val === '=') btn.classList.add('wide');
+
+      buttonsContainer.appendChild(btn);
+
+      btn.addEventListener('click', () => {
+        if(val === '='){
+          try { display.value = eval(display.value.replace('X','*')); }
+          catch { display.value = 'Error'; }
+        } else if(val === 'C'){
+          display.value = '';
+        } else if(val === 'X') {
+          display.value += '*';
+        } else {
+          display.value += val;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
